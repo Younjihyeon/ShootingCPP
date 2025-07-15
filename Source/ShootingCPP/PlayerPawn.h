@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "InputActionValue.h"
 #include "PlayerPawn.generated.h"
 
 
@@ -40,5 +41,30 @@ public:
 	//표면을 그릴 수 있는 컴포넌트.
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* MeshComp;
+
+	UPROPERTY(EditAnywhere)
+	class UInputMappingContext* IMC_PlayerInput;
+
+	UPROPERTY(EditAnywhere)
+	class UInputAction* IA_Horizontal;
+
+	UPROPERTY(EditAnywhere)
+	class UInputAction* IA_Vertical;
+
+	UPROPERTY(EditAnywhere)
+	float MoveSpeed = 500.0f;
+
+private:
+	float Horizontal;
+	float Vertical;
+
+private:
+	//이벤트 발생시 실행 될 함수
+	// FInputActionvalue 사용하려면 
+	// #include "InputActionValue.h"추가 해야 함.
+
+	void OnInputHorizontal(const struct FInputActionValue& value);
+
+	void OnInputVertical(const struct FInputActionValue& value);
 
 };
