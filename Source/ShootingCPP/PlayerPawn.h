@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "PlayerPawn.generated.h"
 
+
 UCLASS()
 class SHOOTINGCPP_API APlayerPawn : public APawn
 {
@@ -29,5 +30,15 @@ public:
 	// Called to bind functionality to input
 	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+public:
+	//전방 선언 
+	// 선언할 타입 앞에 class를 붙이면 
+	// 이뒤에 올 타입이 class타입이라고 컴퓨터가 알고 있는다. 
+	//UBoxComponent는 엔진에서 boxcollision과 같다.
+	UPROPERTY(EditAnywhere)
+	class UBoxComponent* BoxComp;
+	//표면을 그릴 수 있는 컴포넌트.
+	UPROPERTY(EditAnywhere)
+	class UStaticMeshComponent* MeshComp;
 
 };
