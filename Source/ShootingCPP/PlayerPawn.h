@@ -43,6 +43,20 @@ public:
 	class UStaticMeshComponent* MeshComp;
 
 	UPROPERTY(EditAnywhere)
+	class UArrowComponent* FirePosition;
+
+	//T접두사는 템플릿을 의미한다. 
+	//템플릿이란 제작당시에 타입을 지정하지 않고, 
+	//사용할때 타입을 지정할 수 있는 기능
+	///TSubclassOf <> 안에 들어온 클래스와 
+	//그 자식 클래스를 담을 수 있는 타입 
+	 
+	//** 다른점 객체가 담기는게 아님, 즉 붕어빵 틀~!이 담길 수 있다. 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ABullet> BulletFactory;
+	//Abullet에는 엔진에서 만든 Bp bullet도 들어갈 수 있다. 
+
+	UPROPERTY(EditAnywhere)
 	class UInputMappingContext* IMC_PlayerInput;
 
 	UPROPERTY(EditAnywhere)
@@ -50,6 +64,10 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	class UInputAction* IA_Vertical;
+
+	UPROPERTY(EditAnywhere)
+	class UInputAction* IA_Fire;
+
 
 	UPROPERTY(EditAnywhere)
 	float MoveSpeed = 500.0f;
@@ -62,9 +80,11 @@ private:
 	//이벤트 발생시 실행 될 함수
 	// FInputActionvalue 사용하려면 
 	// #include "InputActionValue.h"추가 해야 함.
-
+	// float 1인지 -1 인지 알아야된다. 
 	void OnInputHorizontal(const struct FInputActionValue& value);
-
 	void OnInputVertical(const struct FInputActionValue& value);
+
+	//fire 매개변수 없는 이유 ,, IA Fire는 bool이기 때문에, 함수만 들어오면 그게 true인거다.
+	void Fire();
 
 };

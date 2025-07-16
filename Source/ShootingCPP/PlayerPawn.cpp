@@ -4,8 +4,10 @@
 #include "PlayerPawn.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/ArrowComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Bullet.h"
 
 // Sets default values
 APlayerPawn::APlayerPawn()
@@ -30,6 +32,13 @@ APlayerPawn::APlayerPawn()
 
 	//BoxComp의 BoxExtent를 매개변수로 FVector 값으로 설정한다. 
 	BoxComp->SetBoxExtent(BoxSize);
+
+	// CreateDefaultSubobject
+	// 템플릿 <> 안에 들어온 타입을 객체화 (할당) 한다. 
+	// ()즉 매개 변수 컴포넌트의 이름을 뜻한다. 
+	// 반환 값은 템플렛 <> 안에 들어온 타입의 객체의 주소값 
+	FirePosition = CreateDefaultSubobject<UArrowComponent>(TEXT("Fire Pos"));
+	FirePosition->SetupAttachment(BoxComp);
 
 }
 
@@ -95,6 +104,8 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	EnhancedInputComponent->BindAction(IA_Horizontal, ETriggerEvent::Completed, this, &APlayerPawn::OnInputHorizontal);
 	EnhancedInputComponent->BindAction(IA_Vertical, ETriggerEvent::Triggered, this, &APlayerPawn::OnInputVertical);
 	EnhancedInputComponent->BindAction(IA_Vertical, ETriggerEvent::Completed, this, &APlayerPawn::OnInputVertical);
+
+	EnhancedInputComponent->BindAction(IA_Fire, ETriggerEvent::Started, this, &APlayerPawn::Fire);
 }
 
 void APlayerPawn::OnInputHorizontal(const FInputActionValue& value)
@@ -108,6 +119,23 @@ void APlayerPawn::OnInputVertical(const FInputActionValue& value)
 {
 	Vertical = value.Get<float>();
 	// UE_LOG(LogTemp, Warning, TEXT("Vertical : % 2f"), Vertical);
+
+}
+
+void APlayerPawn::Fire()
+{
+	//현재 활성화 있는 uworld를 반환한다. 
+
+	UWorld* CurrentWorld = GetWorld();
+	check(CurrentWorld);
+
+	//bulletfactory에 엔진에서 BP_Bullet_C(class)를 할당해줬다. 
+	//다형성이 사용됐다. 
+	// ABullet*에 BP_Bullet알맹이를 가진 ABullet* 타입을 넣었다. 
+	// SpawnActor 두번째 매개 변수에는 생성될 월드 좌표
+	// SpawnActor 세번째 매개변수에는 생성될 회전값 
+	ABullet* Newbullet = CurrentWorld->SpawnActor<ABullet>(BulletFactory,
+	FirePosition -> GetComponentLocation(), FirePosition-> GetComponentRotation());
 
 }
 

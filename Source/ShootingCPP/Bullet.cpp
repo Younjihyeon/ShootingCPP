@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "Bullet.h"
@@ -32,5 +32,11 @@ void ABullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// GetActorLocation 월드 기준 내 좌표를 반환
+	// GetActorForwardVector 내가 바라보고 있는 방향 벡터를 반환 
+
+	FVector NewLocation = GetActorLocation() + GetActorForwardVector() * MoveSpeed * DeltaTime;
+	// SetActorLocation 매개 변수로 들어온 벡터로 내 월드 좌표를 이동 시킨다. 
+	SetActorLocation(NewLocation);
 }
 

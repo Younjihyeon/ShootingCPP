@@ -23,6 +23,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditAnywhere)
+	float MoveSpeed = 800.0f;
+
 public:
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* BoxComp;
