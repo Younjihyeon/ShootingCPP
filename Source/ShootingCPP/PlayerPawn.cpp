@@ -6,6 +6,12 @@
 #include "Components/StaticMeshComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+<<<<<<< Updated upstream
+=======
+#include "Kismet/GameplayStatics.h"
+#include "Bullet.h"
+>>>>>>> Stashed changes
+
 
 // Sets default values
 APlayerPawn::APlayerPawn()
@@ -111,3 +117,24 @@ void APlayerPawn::OnInputVertical(const FInputActionValue& value)
 
 }
 
+<<<<<<< Updated upstream
+=======
+void APlayerPawn::Fire()
+{
+	//현재 활성화 있는 uworld를 반환한다. 
+
+	UWorld* CurrentWorld = GetWorld();
+	check(CurrentWorld);
+
+	//bulletfactory에 엔진에서 BP_Bullet_C(class)를 할당해줬다. 
+	//다형성이 사용됐다. 
+	// ABullet*에 BP_Bullet알맹이를 가진 ABullet* 타입을 넣었다. 
+	// SpawnActor 두번째 매개 변수에는 생성될 월드 좌표
+	// SpawnActor 세번째 매개변수에는 생성될 회전값 
+	ABullet* Newbullet = CurrentWorld->SpawnActor<ABullet>(BulletFactory,
+	FirePosition -> GetComponentLocation(), FirePosition-> GetComponentRotation());
+
+	UGameplayStatics::PlaySound2D((CurrentWorld), FireSound);
+}
+
+>>>>>>> Stashed changes

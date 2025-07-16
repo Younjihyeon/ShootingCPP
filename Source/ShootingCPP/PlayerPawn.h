@@ -52,6 +52,16 @@ public:
 	class UInputAction* IA_Vertical;
 
 	UPROPERTY(EditAnywhere)
+<<<<<<< Updated upstream
+=======
+	class UInputAction* IA_Fire;
+
+	UPROPERTY(EditAnywhere)
+	class USoundBase* FireSound;
+
+
+	UPROPERTY(EditAnywhere)
+>>>>>>> Stashed changes
 	float MoveSpeed = 500.0f;
 
 private:
