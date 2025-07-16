@@ -93,7 +93,7 @@ void APlayerPawn::Tick(float DeltaTime)
 	//SetActorLocation은 나의 월드 좌표를 매개 변수로 들어온
 	//fvector의 값으로 바꾼다. 
 
-	SetActorLocation(NewLocation);
+	SetActorLocation(NewLocation, true);
 }
 
 // Called to bind functionality to input

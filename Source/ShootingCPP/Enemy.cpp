@@ -7,6 +7,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "EngineUtils.h"
 #include "PlayerPawn.h"
+#include "Killzone.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -115,9 +116,14 @@ void AEnemy::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 
 		Crashedplayer->Destroy();
 		Destroy();
+		
 	}
 
-
+	AKillzone* CrashedKillZone = Cast<AKillzone>(OtherActor);
+	if (CrashedKillZone != nullptr)
+	{
+		Destroy();
+	}
 		
 }
 
