@@ -32,4 +32,20 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* MeshComp;
 
+	//엔진에서 할당 예정 
+	UPROPERTY(EditAnywhere)
+	class UParticleSystem* explosionFX;
+
+
+public:
+	//다이나믹 델리게이트에 바인드 하려면 UFUNCTION 선언 필수
+	UFUNCTION()
+	void OnBulletOverlap(
+		UPrimitiveComponent* OverlappedComponent, 
+		AActor* OtherActor, 
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult);
+
 };

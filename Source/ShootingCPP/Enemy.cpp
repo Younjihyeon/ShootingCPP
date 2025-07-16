@@ -2,6 +2,7 @@
 
 
 #include "Enemy.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "EngineUtils.h"
@@ -16,6 +17,9 @@ AEnemy::AEnemy()
 	BoxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollider"));
 	SetRootComponent(BoxComp);
 	BoxComp->SetBoxExtent(FVector(50.0f, 50.0f, 50.0f));
+	BoxComp->SetCollisionProfileName(TEXT("EnemyPreset"));
+	
+
 
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static mesh"));
 	MeshComp->SetupAttachment(BoxComp);
@@ -25,6 +29,9 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+
+	BoxComp->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnEnemyOverlap);
+
 	//FMath :: RandRanges는  첫번째 매개 변수 ~ 두번째 매개 변수까지의 수중 렌덤한 수를 반환해준다.
 	//첫번째 매개변수, 두번째 매개변수 포함. 
 	int32 DrawResult = FMath::RandRange(1, 100);
@@ -42,6 +49,15 @@ void AEnemy::BeginPlay()
 		
 		//Players는 지금 선언한 TActorIterator<APlayerPawn>의 이름 
 		TActorIterator<APlayerPawn>Players(GetWorld());
+
+		if (!Players)
+		{
+
+			Direction = GetActorForwardVector();
+		}
+
+
+
 		//Players에는 현재 월드에 있는 APlayerPawn 타입의 객체들이 담겨 있다.
 		//For문은 한번 반복할때마다 Players 안에 있는 AplayerPawn 객체를 순회한다. 
 		for (Players; Players; ++Players)
@@ -83,5 +99,25 @@ void AEnemy::Tick(float DeltaTime)
 
 	SetActorLocation(NewLocation);
 
+}
+
+void AEnemy::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+
+	//otheractor가 bullet일 수도 있고, Player일 수 도 있다. 
+
+	APlayerPawn* Crashedplayer = Cast<APlayerPawn>(OtherActor);
+	
+	if (Crashedplayer) //Crashedplayer != nullptr
+	{
+
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation(), GetActorRotation());
+
+		Crashedplayer->Destroy();
+		Destroy();
+	}
+
+
+		
 }
 

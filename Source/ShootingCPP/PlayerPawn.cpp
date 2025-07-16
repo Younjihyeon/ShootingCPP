@@ -33,6 +33,16 @@ APlayerPawn::APlayerPawn()
 	//BoxComp의 BoxExtent를 매개변수로 FVector 값으로 설정한다. 
 	BoxComp->SetBoxExtent(BoxSize);
 
+	BoxComp->SetGenerateOverlapEvents(true);
+	//OverlapEvents를 사용할수 있게 true로 설정
+	BoxComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
+	//CollisionObject = player
+	BoxComp->SetCollisionObjectType(ECC_GameTraceChannel1);
+	BoxComp->SetCollisionResponseToAllChannels(ECR_Ignore);
+
+	BoxComp->SetCollisionResponseToChannel(ECC_GameTraceChannel2,ECR_Overlap);
+
 	// CreateDefaultSubobject
 	// 템플릿 <> 안에 들어온 타입을 객체화 (할당) 한다. 
 	// ()즉 매개 변수 컴포넌트의 이름을 뜻한다. 
