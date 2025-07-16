@@ -111,7 +111,7 @@ void AEnemy::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 	if (Crashedplayer) //Crashedplayer != nullptr
 	{
 
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation(), GetActorRotation());
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorTransform());
 
 		Crashedplayer->Destroy();
 		Destroy();
