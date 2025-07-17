@@ -4,6 +4,7 @@
 #include "PlayerPawn.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "UObject/ConstructorHelpers.h"
 #include "Components/ArrowComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -25,6 +26,21 @@ APlayerPawn::APlayerPawn()
 
 	//매개변수에 넣은 컴포넌트의 자식으로 설정한다. 
 	MeshComp->SetupAttachment(BoxComp);
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> SpaceShipMesh(TEXT("/Game/ShootingCPP/Modeling/SpaceShip/Spaceship_ARA.Spaceship_ARA"));
+	if (SpaceShipMesh.Succeeded())
+	{
+		MeshComp->SetStaticMesh(SpaceShipMesh.Object);
+
+	}
+	static ConstructorHelpers::FObjectFinder<UMaterial> SpaceShipMat(TEXT("/Game/ShootingCPP/Modeling/SpaceShip/UV.UV"));
+	if (SpaceShipMat.Succeeded())
+	{
+		MeshComp->GetStaticMesh()->SetMaterial(0,SpaceShipMat.Object);
+
+	}
+	
+
 
 	//간접 연산좌 -> 내부 변수나 기능으로 접근
 	//xyz값을 넣을 수 있는 구조체 

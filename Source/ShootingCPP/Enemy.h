@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "NPCBase.h"
 #include "Enemy.generated.h"
 
 UCLASS()
-class SHOOTINGCPP_API AEnemy : public AActor
+class SHOOTINGCPP_API AEnemy : public ANPCBase
 {
 	GENERATED_BODY()
 	
@@ -25,33 +26,20 @@ public:
 
 
 public:
-	UPROPERTY(EditAnywhere)
-	class UBoxComponent* BoxComp;
-
-	UPROPERTY(EditAnywhere)
-	class UStaticMeshComponent* MeshComp;
 
 	UPROPERTY(EditAnywhere)
 	int32 TraceRate = 50;
 
-	UPROPERTY(EditAnywhere)
-	float MoveSpeed = 800.0f;
+private:
+	FVector Direction;
+	//방향 벡터를 할당 할 예정
 
-	UPROPERTY(EditAnywhere)
-	class UParticleSystem* explosionFX;
-
-
-	UFUNCTION()
-	void OnEnemyOverlap
+protected:
+	virtual void OnNPCOverlap
 	(UPrimitiveComponent* OverlappedComponent,
 	 AActor* OtherActor, 
 	 UPrimitiveComponent* OtherComp,
 	 int32 OtherBodyIndex,
 	 bool bFromSweep,
-	const FHitResult& SweepResult);
-	
-private:
-	FVector Direction; 
-	//방향 벡터를 할당 할 예정
-
+	const FHitResult& SweepResult)override;
 };

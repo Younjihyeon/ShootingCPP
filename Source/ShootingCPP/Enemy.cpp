@@ -4,7 +4,6 @@
 #include "Enemy.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/BoxComponent.h"
-#include "Components/StaticMeshComponent.h"
 #include "EngineUtils.h"
 #include "PlayerPawn.h"
 #include "Killzone.h"
@@ -16,23 +15,21 @@ AEnemy::AEnemy()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	BoxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollider"));
-	SetRootComponent(BoxComp);
-	BoxComp->SetBoxExtent(FVector(50.0f, 50.0f, 50.0f));
 	BoxComp->SetCollisionProfileName(TEXT("EnemyPreset"));
-	
+	MoveSpeed = 1000.0f;
+	MeshComp->AddLocalRotation(FRotator(0, -90.0f, 0)); //z,x,y 순이다. 
 
 
-	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static mesh"));
-	MeshComp->SetupAttachment(BoxComp);
+
+
+
+
 }
 
 // Called when the game starts or when spawned
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-
-	BoxComp->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnEnemyOverlap);
 
 	//FMath :: RandRanges는  첫번째 매개 변수 ~ 두번째 매개 변수까지의 수중 렌덤한 수를 반환해준다.
 	//첫번째 매개변수, 두번째 매개변수 포함. 
@@ -103,16 +100,14 @@ void AEnemy::Tick(float DeltaTime)
 
 }
 
-void AEnemy::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AEnemy::OnNPCOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-
 	//otheractor가 bullet일 수도 있고, Player일 수 도 있다. 
 
 	APlayerPawn* Crashedplayer = Cast<APlayerPawn>(OtherActor);
-	
+
 	if (Crashedplayer) //Crashedplayer != nullptr
 	{
-
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorTransform());
 
 		Crashedplayer->Destroy();
@@ -131,7 +126,7 @@ void AEnemy::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 
 
 		Destroy();
-		
+
 	}
 
 	AKillzone* CrashedKillZone = Cast<AKillzone>(OtherActor);
@@ -139,6 +134,4 @@ void AEnemy::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 	{
 		Destroy();
 	}
-		
 }
-
