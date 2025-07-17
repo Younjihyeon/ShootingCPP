@@ -8,6 +8,7 @@
 #include "EngineUtils.h"
 #include "PlayerPawn.h"
 #include "Killzone.h"
+#include "ShootingGameModeBase.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -115,6 +116,20 @@ void AEnemy::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorTransform());
 
 		Crashedplayer->Destroy();
+
+		AGameModeBase* CurrentGameModeBase = GetWorld()->GetAuthGameMode();
+		AShootingGameModeBase* ShootingGameModeBase = Cast<AShootingGameModeBase>(CurrentGameModeBase);
+		check(ShootingGameModeBase);
+
+		ShootingGameModeBase->ShowMenu();
+
+		//게임을 일시 정지  
+		UGameplayStatics::SetGamePaused(GetWorld(), true);
+
+		//마우스 커서를 보이게 한다.
+		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
+
+
 		Destroy();
 		
 	}

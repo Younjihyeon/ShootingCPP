@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "ShootingGameModeBase.h"
 #include "Enemy.h"
 
 
@@ -62,6 +63,16 @@ void ABullet::OnBulletOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 
 
 		CrashedEnemy->Destroy();
+
+		//현재구동중인 월드에 있는 게임 모드를 반환해준다.
+		AGameModeBase* CurrentGameModeBase = GetWorld()->GetAuthGameMode();
+		//cast 써서 AGameModeBase ->AShootingGameModeBase 로 형변환을 시켜줘야
+		//AddScore을 사용 할수있다.
+		// <>안에는 변환하고 싶은 타입
+		//() 안에는 변화 될 대상
+		AShootingGameModeBase* ShootingGameModeBase = Cast<AShootingGameModeBase>(CurrentGameModeBase);
+		check(ShootingGameModeBase);
+		ShootingGameModeBase->AddScore(1);
 	}
 
 	Destroy();
