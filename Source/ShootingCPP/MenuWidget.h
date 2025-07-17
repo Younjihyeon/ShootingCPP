@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -13,6 +13,9 @@ UCLASS()
 class SHOOTINGCPP_API UMenuWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
+protected:
+	virtual void NativeConstruct() override;
 	
 private:
 
@@ -22,5 +25,11 @@ private:
 	UPROPERTY(EditAnywhere, meta = (Bindwidget))
 	class UButton* Button_Quit;
 
+public:
+	UFUNCTION()
+	void RestartLevel();
+
+	UFUNCTION()
+	void Quit();
 
 };

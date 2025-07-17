@@ -13,6 +13,7 @@ UCLASS()
 class SHOOTINGCPP_API UMainWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
 protected:
 	
 	//UTextBlock은 widget에서 Text 
